@@ -1,11 +1,25 @@
-pages:
-  stage: deploy
-  script:
-    - mkdir .public
-    - cp -r index1.html .public
-    - mv .public public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+name: Workflow de Déploiement
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Récupérer le Dépôt
+      uses: actions/checkout@v2
+
+    - name: Créer et Déployer
+      run: |
+        mkdir .public
+        cp -r index1.html .public
+        mv .public public
+
+    - name: Publier l'Artéfact
+      uses: actions/upload-artifact@v2
+      with:
+        name: fichiers-publics
+        path: public
+
